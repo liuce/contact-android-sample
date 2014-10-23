@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.lightips.sample.contacts.ContactDetailActivity" >
+    <item android:id="@+id/action_contact_item_delete"
+        android:title="@string/action_settings"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom" />
+    <item android:id="@+id/action_contact_item_save"
+        android:title="@string/action_settings"
+        android:icon="@android:drawable/ic_menu_save"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom" />
+</menu>
