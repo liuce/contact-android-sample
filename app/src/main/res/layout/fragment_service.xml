@@ -1,0 +1,41 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.lightips.sample.contacts.fragment.ServiceFragment">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/f_service_btn_startserice"
+        android:id="@+id/btn_start_service"
+        android:layout_gravity="left|top"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/f_service_btn_pauseserice"
+        android:id="@+id/btn_pause_service"
+        android:layout_gravity="left|top"
+        android:layout_marginLeft="100dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/f_service_btn_resumeserice"
+        android:id="@+id/btn_resume_service"
+        android:layout_gravity="right|top"
+        android:layout_marginRight="100dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/f_service_btn_stopserice"
+        android:id="@+id/btn_stop_service"
+        android:layout_gravity="right|top"/>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_gravity="center" />
+
+</FrameLayout>

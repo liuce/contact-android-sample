@@ -15,4 +15,9 @@
         android:title="@string/action_refresh"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_xmlrefresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="@string/action_xmlrefresh"
+        android:orderInCategory="100"
+        android:showAsAction="never"/>
 </menu>

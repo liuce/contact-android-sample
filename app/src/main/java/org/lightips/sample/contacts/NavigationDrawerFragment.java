@@ -103,6 +103,7 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.id.text1,
                 new String[]{
                         getString(R.string.title_contact),
+                        getString(R.string.title_service),
                         getString(R.string.title_about)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);

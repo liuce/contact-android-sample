@@ -4,13 +4,22 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="@dimen/contact_item_height">
 
+    <ImageView
+        android:layout_width="@dimen/contact_item_image_width"
+        android:layout_height="@dimen/contact_item_image_height"
+        android:id="@+id/imageView"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/ic_action_user"
+        android:background="@color/black_overlay"/>
+
     <TextView
         android:layout_width="@dimen/contact_item_fn_width"
         android:layout_height="@dimen/contact_item_fn_height"
         android:text="New Text"
         android:id="@+id/firstName"
         android:textSize="20dp"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="100dp"/>
 
     <TextView
         android:layout_width="@dimen/contact_item_fn_width"
@@ -21,4 +30,5 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="10dp"/>
+
 </RelativeLayout>

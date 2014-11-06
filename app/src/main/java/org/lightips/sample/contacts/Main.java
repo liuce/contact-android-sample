@@ -32,10 +32,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.lightips.common.http.xml.XmlResult;
 import org.lightips.sample.contacts.entity.Contact;
+import org.lightips.sample.contacts.entity.xml.VersionXml;
 import org.lightips.sample.contacts.fragment.AboutFragment;
 import org.lightips.sample.contacts.fragment.ContactsFragment;
+import org.lightips.sample.contacts.fragment.ServiceFragment;
 import org.lightips.sample.contacts.service.http.JsonHttpHandler;
+import org.lightips.sample.contacts.service.http.XmlHttpHandler;
 
 
 import java.io.IOException;
@@ -52,6 +56,7 @@ public class Main extends Activity
 
     private ProgressDialog progressDialog;
     private JsonHttpHandler jsonHttpHandler;
+    private XmlHttpHandler xmlHttpHandler;
     private boolean destroyed = false;
 
     /**
@@ -80,6 +85,9 @@ public class Main extends Activity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         jsonHttpHandler = new JsonHttpHandler(this.getApplicationContext());
         jsonHttpHandler.setPartUrl("contacts");
+
+        xmlHttpHandler = new XmlHttpHandler(this.getApplicationContext());
+        xmlHttpHandler.setPartUrl("version");
     }
 
     @Override
@@ -95,6 +103,11 @@ public class Main extends Activity
                 break;
             case 1:
                 fragmentManager.beginTransaction()
+                        .replace(R.id.container, ServiceFragment.newInstance(position + 1))
+                        .commit();
+                break;
+            case 2:
+                fragmentManager.beginTransaction()
                         .replace(R.id.container, AboutFragment.newInstance(position + 1))
                         .commit();
                 break;
@@ -108,6 +121,8 @@ public class Main extends Activity
                 break;
             case 2:
                 mTitle = getString(R.string.title_about);
+            case 3:
+                mTitle = getString(R.string.title_service);
         }
     }
 
@@ -154,6 +169,10 @@ public class Main extends Activity
             new FetchContactTask().execute();
             return true;
         }
+        if (id == R.id.action_xmlrefresh) {
+            new VersionFetchTask().execute();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -188,29 +207,30 @@ public class Main extends Activity
             final String url = getString(R.string.base_uri) + "contacts";
 
             List<Contact> contacts = null;
-            HttpGet httpGet=new HttpGet(url);
-            //取得HTTP response
-            try {
-                HttpResponse response=new DefaultHttpClient().execute(httpGet);
-                //若状态码为200
-                if(response.getStatusLine().getStatusCode()==200){
-                    //取出应答字符串
-                    HttpEntity entity=response.getEntity();
-                    try {
-                        String result = EntityUtils.toString(entity, HTTP.UTF_8);
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        Contact[] value=objectMapper.readValue(result,Contact[].class);
-                        contacts = Lists.newArrayList(value);
-                    } catch (IOException e) {
-                        Log.e(TAG,"",e);
-                    }
-                }
-            } catch (IOException e) {
-                Log.e(TAG, "", e);
-            }
+//            HttpGet httpGet=new HttpGet(url);
+//            //取得HTTP response
+//            try {
+//                HttpResponse response=new DefaultHttpClient().execute(httpGet);
+//                //若状态码为200
+//                if(response.getStatusLine().getStatusCode()==200){
+//                    //取出应答字符串
+//                    HttpEntity entity=response.getEntity();
+//                    try {
+//                        String result = EntityUtils.toString(entity, HTTP.UTF_8);
+//
+//                        ObjectMapper objectMapper = new ObjectMapper();
+//                        Contact[] value=objectMapper.readValue(result,Contact[].class);
+//                        contacts = Lists.newArrayList(value);
+//                    } catch (IOException e) {
+//                        Log.e(TAG,"",e);
+//                    }
+//                }
+//            } catch (IOException e) {
+//                Log.e(TAG, "", e);
+//            }
 
-//            Contact[] value= jsonHttpHandler.getForObject(Contact[].class);
-//            contacts = Lists.newArrayList(value);
+            Contact[] value= jsonHttpHandler.getForObject(Contact[].class,"","");
+            contacts = Lists.newArrayList(value);
 
             return contacts;
 
@@ -224,6 +244,33 @@ public class Main extends Activity
 
     }
 
+    private class VersionFetchTask extends AsyncTask<Void, Void, List<VersionXml>> {
+
+        @Override
+        protected void onPreExecute() {
+            showLoadingProgressDialog();
+
+        }
+
+        @Override
+        protected List<VersionXml> doInBackground(Void... params) {
+            final String url = getString(R.string.base_uri) + "contacts";
+
+            VersionXml.VersionXmlResult xmlResult=xmlHttpHandler.getForObject(VersionXml.VersionXmlResult.class);
+
+            if(xmlResult!=null && !xmlResult.getData().isEmpty()){
+                Log.d(TAG, "Version Name: " + xmlResult.getData().get(0).getVersionName());
+            }
+            return xmlResult.getData();
+
+        }
+
+        @Override
+        protected void onPostExecute(List<VersionXml> result) {
+            dismissProgressDialog();
+        }
+
+    }
 
     public void showLoadingProgressDialog() {
         this.showProgressDialog("Loading. Please wait...");

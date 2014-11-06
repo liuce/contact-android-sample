@@ -32,6 +32,6 @@ public class XmlHttpHandler extends AbstractHttpHandler {
 
     @Override
     public String getContext() {
-        return null;
+        return "";
     }
 }
